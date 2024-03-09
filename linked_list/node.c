@@ -16,6 +16,15 @@ void show_link(Node* l)
     }
 }
 
+void show_link2(Node* l)
+{
+    if(l == NULL){
+        return;
+    }
+    printf("%d\n", l -> data);
+    show_link2(l -> next);
+}
+
 void tail_insert(Node** l, Node* a)
 {
     Node* temp = *l; 
@@ -61,6 +70,33 @@ void delete(Node** l, int index)
     free(temp1);
 }
 
+void reverse_loop(Node** l)
+{
+    Node *current, *prev, *next;
+    current = *l;
+    prev = NULL;
+    next = NULL;
+    while(current != NULL){
+        next = current -> next;
+        current -> next = prev;
+        prev = current;
+        current = next;
+    }
+    *l = prev; 
+}
+
+Node* recursive_reverse(Node* l)
+{
+    if(l -> next == NULL){
+        return l;
+    }
+    Node* new_head = recursive_reverse(l -> next);
+    l -> next -> next = l;
+    l -> next = NULL;
+    return new_head;
+}
+
+
 int main()
 {
     Node* A = (Node*)malloc(sizeof(Node));
@@ -99,5 +135,17 @@ int main()
     printf("delete2\n");
     delete(&A, 2);
     show_link(A);
+
+    printf("reverse\n");
+    reverse_loop(&A);
+    show_link(A);
+
+    printf("show_link2\n");
+    show_link2(A);
+    
+    printf("recursive_reverse\n");
+    A  = recursive_reverse(A);
+    show_link2(A);
+    return 0;
 }
 
